@@ -55,7 +55,6 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t check;
-//uint8_t airtin[6] = "01234";
 
 /* USER CODE END PV */
 
@@ -71,11 +70,10 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-void msg(char uhu, char *teucu) {
+void msg(char recebido, char *mens) {
 	int cont = 0;
-	if(uhu == 'A'){
+	if(recebido == 'A'){
 		while(cont <3){
-//			 char *airtu = *teucu;
 			 HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 			 check = SSD1306_Init ();
 			 SSD1306_UpdateScreen(); //display
@@ -90,10 +88,9 @@ void msg(char uhu, char *teucu) {
 			 HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 			 HAL_Delay(500);
 		}
-//		airtim[0] = "0";
 	}
 
-	if(uhu == 'B'){
+	if(recebido == 'B'){
 		while(cont <3){
 			HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 			check = SSD1306_Init ();
@@ -109,9 +106,8 @@ void msg(char uhu, char *teucu) {
 			HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 			HAL_Delay(500);
 		}
-//		airtim[0] = "0";
 	}
-	if(uhu == 'C'){
+	if(recebido == 'C'){
 			while(cont <3){
 				HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 				check = SSD1306_Init ();
@@ -127,9 +123,8 @@ void msg(char uhu, char *teucu) {
 				HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 				HAL_Delay(500);
 			}
-	//		airtim[0] = "0";
 	}
-	if(uhu == 'D'){
+	if(recebido == 'D'){
 			while(cont <3){
 				HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 				check = SSD1306_Init ();
@@ -145,21 +140,20 @@ void msg(char uhu, char *teucu) {
 				HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
 				HAL_Delay(500);
 			}
-	//		airtim[0] = "0";
 	}
-	if(uhu != 'A' && uhu != 'B' && uhu != 'C' && uhu != 'D'){
+	if(recebido != 'A' && recebido != 'B' && recebido != 'C' && recebido != 'D'){
 		while(cont <3){
 				check = SSD1306_Init ();
 				SSD1306_UpdateScreen(); //display
 				SSD1306_GotoXY (10, 30);
-				SSD1306_Puts (teucu, &Font_11x18, 1);
+				SSD1306_Puts (mens, &Font_11x18, 1);
 				SSD1306_UpdateScreen(); //display
 				HAL_I2C_IsDeviceReady (&hi2c1, 0x4E, 10, 100);
 				HAL_Delay(1000);
 				cont ++;
-//				HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+
 			}
-//		airtim[0] = "0";
+
 	}
 }
 
@@ -205,7 +199,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 
-  	  	check = SSD1306_Init ();
+  	  check = SSD1306_Init ();
     	SSD1306_UpdateScreen(); //display
     	SSD1306_GotoXY (10,10);
     	SSD1306_Puts ("", &Font_11x18, 1);
@@ -224,19 +218,19 @@ int main(void)
 
   while (1)
   {
-	  char airtim[20];
+	  char codigo[20];
 
-	  memset( airtim, 0, 20 );
+	  memset( codigo, 0, 20 );
 
-	  HAL_UART_Receive( &huart1, airtim, 20, 2000 );
-	  HAL_UART_Transmit ( &huart1, airtim, 20, 100 );
-	  msg(airtim[0],airtim);
+	  HAL_UART_Receive( &huart1, codigo, 20, 2000 );
+	  HAL_UART_Transmit ( &huart1, codigo, 20, 100 );
+	  msg(codigo[0],codigo);
 
 //	  HAL_UART_Transmit(&huart1,(uint8_t*)airtin, 7,100);
 //	  HAL_UART_Receive(&huart1,(uint8_t*)airtin, 7,100);
 //	  msg(airtin[0]);
 //
-	  airtim[0] = "0";
+	  codigo[0] = "0";
 
   /* USER CODE END WHILE */
 
